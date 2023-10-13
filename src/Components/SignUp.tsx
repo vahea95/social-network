@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, provider } from "../firebase";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignUp = (): any => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [surname, setSurName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,6 +20,8 @@ export const SignUp = (): any => {
         password,
       );
       const user = userCredential.user;
+
+      navigate("/login");
       console.log(user);
     } catch (error: any) {
       console.log(error.message);
@@ -28,6 +32,7 @@ export const SignUp = (): any => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
+      navigate("/login");
       console.log(user);
     } catch (error: any) {
       const errorMessage = error.message;
@@ -35,9 +40,9 @@ export const SignUp = (): any => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center h-[100vh]">
+    <div className="w-full flex justify-center items-center mt-6">
       <div className="flex flex-col w-[400px] p-4 rounded shadow-lg">
-        <h1 className="mb-8 text-3xl text-center">Create a new account</h1>
+        <h1 className="mb-8 text-3xl text-center">Sign Up</h1>
         <button
           className="px-4 py-3 mb-4 mx-3 border flex justify-center gap-2 border-slate-200 rounded-lg text-white bg-blue-500 hover:border-slate-400 hover:text-slate-100 hover:shadow transition duration-150"
           onClick={handleGoogleSignUp}
@@ -53,19 +58,16 @@ export const SignUp = (): any => {
         <div>
           <form>
             <div className="flex flex-col justify-around">
-              <label>Name</label>
               <input
                 type="text"
                 placeholder="Name"
                 className="p-2 m-2 rounded border-inherit border-2"
               />
-              <label>Surname</label>
               <input
                 type="text"
                 placeholder="Surname"
                 className="p-2 m-2 rounded border-inherit border-2"
               />
-              <label>Email</label>
               <input
                 type="email"
                 placeholder="Email"
@@ -73,7 +75,6 @@ export const SignUp = (): any => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <label>Password</label>
               <input
                 type="password"
                 placeholder="Password"
@@ -85,13 +86,13 @@ export const SignUp = (): any => {
               <div className="flex justify-center mt-2">
                 <p>
                   Already have an account?
-                  <a className="text-blue-600" href="/signIn">
+                  <Link className="text-blue-600" to="/login">
                     Login
-                  </a>
+                  </Link>
                 </p>
               </div>
               <button
-                className="px-4 py-3 mt-12 mb-2 mx-2 border flex justify-center gap-2 bg-blue-500 border-slate-200 rounded-lg text-white hover:border-slate-400 hover:text-slate-100 hover:shadow transition duration-150"
+                className="px-4 py-3 mt-12 mx-12 mb-2 mx-2 border flex justify-center gap-2 bg-green-600 border-slate-200 rounded-lg text-white hover:border-slate-400 hover:text-slate-100 hover:shadow transition duration-150"
                 onClick={handleSignUp}
               >
                 Sign Up

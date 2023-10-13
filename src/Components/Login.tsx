@@ -1,10 +1,12 @@
 import { auth, provider } from "../firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   // @ts-ignore
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -15,7 +17,8 @@ export const Login = () => {
         password,
       );
       const user = userCredential.user;
-      console.log(user);
+      navigate("/");
+      console.log(777);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -24,6 +27,7 @@ export const Login = () => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
+      navigate("/");
       console.log(user);
     } catch (error: any) {
       const errorMessage = error.message;
@@ -31,7 +35,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center h-[100vh]">
+    <div className="w-full flex justify-center items-center mt-6">
       <div className="flex flex-col w-[400px] p-4 rounded shadow-lg">
         <h1 className="mb-8 text-3xl text-center">Sign In to your account</h1>
         <button
@@ -48,7 +52,6 @@ export const Login = () => {
         </button>
         <form>
           <div className="flex flex-col justify-around h-full">
-            <label>Email</label>
             <input
               type="email"
               placeholder="Email"
@@ -56,7 +59,6 @@ export const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label>Password</label>
             <input
               type="password"
               placeholder="Password"
@@ -65,10 +67,16 @@ export const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
-              className="px-4 py-3 mt-12 my-4 mx-2 border flex justify-center gap-2 bg-blue-500 border-slate-200 rounded-lg text-white hover:border-slate-400 hover:text-slate-100 hover:shadow transition duration-150"
+              className="px-4 py-3 mt-4 my-4 mx-2 border flex justify-center gap-2 bg-blue-500 border-slate-200 rounded-lg text-white hover:border-slate-400 hover:text-slate-100 hover:shadow transition duration-150"
               onClick={handleSignIn}
             >
               Login
+            </button>
+            <button
+              className="bg-green-500 text-white font-bold px-2 py-4 mx-20 my-4"
+              onClick={() => navigate("/signup")}
+            >
+              Create new account
             </button>
           </div>
         </form>
